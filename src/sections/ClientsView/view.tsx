@@ -9,7 +9,7 @@ export default function ClientsView() {
         العملاء
       </Typography>
       <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
-        إدارة واستعراض قائمة العملاء المشتركييييييييييييييين
+        إدارة واستعراض قائمة العملاء المشتركين
       </Typography>
     </Box>
   );
