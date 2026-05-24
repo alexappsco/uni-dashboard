@@ -1,16 +1,16 @@
-import { menuItemClasses } from '@mui/material/MenuItem';
-import Popover, { PopoverOrigin } from '@mui/material/Popover';
+import { menuItemClasses } from "@mui/material/MenuItem";
+import Popover, { PopoverOrigin } from "@mui/material/Popover";
 
-import { getPosition } from './utils';
-import { StyledArrow } from './styles';
-import { MenuPopoverProps } from './types';
+import { getPosition } from "./utils";
+import { StyledArrow } from "./styles";
+import { MenuPopoverProps } from "./types";
 
 // ----------------------------------------------------------------------
 
 export default function CustomPopover({
   open,
   children,
-  arrow = 'top-right',
+  arrow = "top-right",
   hiddenArrow,
   sx,
   ...other
@@ -23,14 +23,15 @@ export default function CustomPopover({
       anchorEl={open}
       anchorOrigin={anchorOrigin as PopoverOrigin}
       transformOrigin={transformOrigin as PopoverOrigin}
+      disableScrollLock
       slotProps={{
         paper: {
           sx: {
-            width: 'auto',
-            overflow: 'inherit',
+            width: "auto",
+            overflow: "inherit",
             ...style,
             [`& .${menuItemClasses.root}`]: {
-              '& svg': {
+              "& svg": {
                 mr: 2,
                 flexShrink: 0,
               },
