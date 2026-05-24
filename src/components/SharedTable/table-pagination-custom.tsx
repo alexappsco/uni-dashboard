@@ -36,7 +36,7 @@ export default function TablePaginationCustom({
 
       {onChangeDense && (
         <FormControlLabel
-          label={t('Global.Sections.Table.dense')}
+          label="Dense"
           control={<Switch checked={dense} onChange={onChangeDense} />}
           sx={{
             pl: 2,
