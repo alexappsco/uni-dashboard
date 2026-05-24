@@ -271,6 +271,8 @@ export default function BranchesView() {
                   fontSize: "0.95rem",
                   borderBottom:
                     statusFilter === tab.value ? "2px solid #111827" : "none",
+                  borderRadius: 0,
+                  mb: "-1px",
                   whiteSpace: "nowrap",
                   "&:hover": {
                     backgroundColor: "transparent",
