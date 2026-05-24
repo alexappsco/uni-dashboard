@@ -36,6 +36,7 @@ const items = [
   { label: "إدارة المتابعين", icon: "/icons/manageemploye.svg", path: "/followers" },
   { label: "التقارير", icon: "/icons/reports.svg", path: "/reports" },
   { label: "الدعم الفني", icon: "/icons/suport.svg", path: "/support" },
+  { label: "المحفظة المالية", icon: "/icons/tekat.svg", path: "/financial-wallet" },
 ];
 
 function SidebarIcon({ active = false, src }: SidebarIconProps) {
