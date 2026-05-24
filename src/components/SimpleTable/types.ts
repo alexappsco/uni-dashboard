@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { SxProps, Theme } from "@mui/material/styles";
 
 export type HeadCell<T = unknown> = {
@@ -26,6 +26,7 @@ export interface SimpleTableProps<T extends { id: string | number }> {
   data: T[];
   headCells: HeadCell<T>[];
   actions?: TableAction<T>[];
+  actionsHeaderLabel?: string;
   customRender?: CustomRender<T>;
   onRowClick?: (row: T) => void;
   loading?: boolean;
