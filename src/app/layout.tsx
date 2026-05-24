@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { NextIntlClientProvider } from "next-intl";
+import ThemeProvider from "src/theme";
+import { SettingsProvider } from "src/components/settings";
+import { getMessages } from "next-intl/server";
 import DashboardLayout from "src/layouts/DashboardLayout";
 
 const geistSans = Geist({
@@ -34,11 +36,22 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <NextIntlClientProvider messages={messages}>
-          <DashboardLayout>
-            {children}
-          </DashboardLayout>
-        </NextIntlClientProvider>
+        <SettingsProvider
+          defaultSettings={{
+            themeStretch: false,
+            themeMode: "light",
+            themeDirection: "rtl",
+            themeContrast: "default",
+            themeLayout: "vertical",
+            themeColorPresets: "default",
+          }}
+        >
+          <ThemeProvider>
+            <NextIntlClientProvider messages={messages}>
+              <DashboardLayout>{children}</DashboardLayout>
+            </NextIntlClientProvider>
+          </ThemeProvider>
+        </SettingsProvider>
       </body>
     </html>
   );

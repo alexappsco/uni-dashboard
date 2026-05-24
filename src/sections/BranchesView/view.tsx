@@ -8,7 +8,9 @@ import {
   TextField,
   InputAdornment,
   Button,
+  MenuItem,
 } from "@mui/material";
+import SelectField from "src/components/SelectField/SelectField";
 import SimpleTable from "src/components/SimpleTable";
 import Iconify from "src/components/iconify";
 import AddBranchDialog from "./AddBranchDialog";
@@ -339,8 +341,7 @@ export default function BranchesView() {
             />
 
             {/* Location Filter */}
-            <TextField
-              select
+            <SelectField
               defaultValue="all"
               size="small"
               sx={{
@@ -351,11 +352,11 @@ export default function BranchesView() {
                 },
               }}
             >
-              <option value="all">الموقع</option>
-              <option value="riyadh">الرياض</option>
-              <option value="jeddah">جدة</option>
-              <option value="dammam">الدمام</option>
-            </TextField>
+              <MenuItem value="all">الموقع</MenuItem>
+              <MenuItem value="riyadh">الرياض</MenuItem>
+              <MenuItem value="jeddah">جدة</MenuItem>
+              <MenuItem value="dammam">الدمام</MenuItem>
+            </SelectField>
           </Box>
         </Box>
 
