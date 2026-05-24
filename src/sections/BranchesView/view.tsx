@@ -9,12 +9,15 @@ import {
   InputAdornment,
   Button,
   MenuItem,
+  Switch,
 } from "@mui/material";
 import SelectField from "src/components/SelectField/SelectField";
 import SimpleTable from "src/components/SimpleTable";
 import Iconify from "src/components/iconify";
 import AddBranchDialog from "./AddBranchDialog";
+import BranchDetailsDialog from "./BranchDetailsDialog";
 import { DUMMY_BRANCHES, TABLE_HEAD, Branch } from "./branch-mock-data";
+import DeleteDialog from "src/components/dialog/delete";
 
 export default function BranchesView() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,6 +26,10 @@ export default function BranchesView() {
     "all" | "active" | "inactive"
   >("all");
   const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [branchToDelete, setBranchToDelete] = useState<Branch | null>(null);
 
   const handleStatusToggle = (id: string) => {
     setBranches((current) =>
@@ -62,12 +69,37 @@ export default function BranchesView() {
     setOpenAddDialog(false);
   };
 
+  const handleEditBranch = (updatedBranch: Branch) => {
+    setBranches((current) =>
+      current.map((b) => (b.id === updatedBranch.id ? updatedBranch : b))
+    );
+    setOpenAddDialog(false);
+    setSelectedBranch(null);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (branchToDelete) {
+      setBranches((current) => current.filter((b) => b.id !== branchToDelete.id));
+    }
+    setOpenDeleteDialog(false);
+    setBranchToDelete(null);
+  };
+
   const actions = [
+    {
+      label: "عرض",
+      icon: <Iconify icon="solar:eye-bold" />,
+      onClick: (row: Branch) => {
+        setSelectedBranch(row);
+        setOpenDetailsDialog(true);
+      },
+    },
     {
       label: "تعديل",
       icon: <Iconify icon="solar:pen-bold" />,
       onClick: (row: Branch) => {
-        console.log("Edit branch:", row);
+        setSelectedBranch(row);
+        setOpenAddDialog(true);
       },
     },
     {
@@ -75,7 +107,8 @@ export default function BranchesView() {
       icon: <Iconify icon="solar:trash-bin-trash-bold" />,
       sx: { color: "error.main" },
       onClick: (row: Branch) => {
-        console.log("Delete branch:", row);
+        setBranchToDelete(row);
+        setOpenDeleteDialog(true);
       },
     },
   ];
@@ -102,54 +135,16 @@ export default function BranchesView() {
           >
             {active ? "مفعل" : "غير مفعل"}
           </Typography>
-          <Box
-            component="label"
+          <Switch
+            checked={active}
+            onChange={() => handleStatusToggle(row.id)}
             sx={{
-              position: "relative",
-              display: "inline-flex",
-              alignItems: "center",
-              width: 44,
-              height: 26,
-              cursor: "pointer",
+              '& .MuiSwitch-track': {
+                backgroundColor: active ? '#00A76F' : '#e5e7eb',
+                opacity: 1,
+              },
             }}
-          >
-            <Box
-              component="input"
-              type="checkbox"
-              checked={active}
-              onChange={() => handleStatusToggle(row.id)}
-              sx={{
-                position: "absolute",
-                opacity: 0,
-                width: "100%",
-                height: "100%",
-                margin: 0,
-                cursor: "pointer",
-              }}
-            />
-            <Box
-              sx={{
-                width: 44,
-                height: 26,
-                borderRadius: 999,
-                bgcolor: active ? "rgba(16, 185, 129, 0.5)" : "#e5e7eb",
-                transition: "background-color 0.2s ease",
-              }}
-            />
-            <Box
-              sx={{
-                position: "absolute",
-                top: 2,
-                left: active ? "calc(100% - 22px)" : 2,
-                width: 20,
-                height: 20,
-                borderRadius: "50%",
-                bgcolor: "#fff",
-                boxShadow: "0 1px 2px rgba(0,0,0,0.12)",
-                transition: "left 0.2s ease",
-              }}
-            />
-          </Box>
+          />
         </Box>
       );
     },
@@ -164,7 +159,6 @@ export default function BranchesView() {
           justifyContent: "space-between",
           alignItems: "center",
           mb: 4,
-          flexDirection: { xs: "column", sm: "row-reverse" },
           gap: 2,
         }}
       >
@@ -369,11 +363,37 @@ export default function BranchesView() {
         />
       </Card>
 
-      {/* Add Branch Dialog */}
+      {/* Add / Edit Branch Dialog */}
       <AddBranchDialog
+        key={openAddDialog ? (selectedBranch ? `edit-${selectedBranch.id}` : "add") : "closed"}
         open={openAddDialog}
-        onClose={() => setOpenAddDialog(false)}
+        onClose={() => {
+          setOpenAddDialog(false);
+          setSelectedBranch(null);
+        }}
         onAdd={handleAddBranch}
+        onEdit={handleEditBranch}
+        branchToEdit={selectedBranch}
+      />
+
+      {/* Branch Details Dialog */}
+      <BranchDetailsDialog
+        open={openDetailsDialog}
+        onClose={() => {
+          setOpenDetailsDialog(false);
+          setSelectedBranch(null);
+        }}
+        branch={selectedBranch}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <DeleteDialog
+        open={openDeleteDialog}
+        onClose={() => {
+          setOpenDeleteDialog(false);
+          setBranchToDelete(null);
+        }}
+        onConfirm={handleDeleteConfirm}
       />
     </Box>
   );
