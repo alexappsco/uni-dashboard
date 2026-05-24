@@ -33,6 +33,7 @@ const items = [
   { label: "العملاء", icon: "/icons/customer.svg", path: "/clients" },
   { label: "إدارة الموظفين", icon: "/icons/manageemploye.svg", path: "/employees" },
   { label: "الاعلانات", icon: "/icons/ads.svg", path: "/advertisements" },
+  { label: "إدارة المتابعين", icon: "/icons/manageemploye.svg", path: "/followers" },
   { label: "التقارير", icon: "/icons/reports.svg", path: "/reports" },
   { label: "الدعم الفني", icon: "/icons/suport.svg", path: "/support" },
 ];
