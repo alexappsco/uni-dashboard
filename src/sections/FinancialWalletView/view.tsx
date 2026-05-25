@@ -200,7 +200,7 @@ export default function FinancialWalletView() {
               "&:hover": { bgcolor: "#7758E6" },
             }}
           >
-            عمل طلب استيراد
+            عمل طلب استرداد
           </Button>
 
           <Button
