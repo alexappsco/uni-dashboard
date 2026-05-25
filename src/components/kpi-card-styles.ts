@@ -1,5 +1,6 @@
 import { keyframes } from "@mui/system";
 import type { SxProps, Theme } from "@mui/material";
+import type { SystemStyleObject } from "@mui/system";
 
 export const kpiFadeInUp = keyframes`
   from {
@@ -37,7 +38,7 @@ export function getKpiCardSx(animationDelay?: string): SxProps<Theme> {
   };
 }
 
-export const kpiCardHeaderSx: SxProps<Theme> = {
+export const kpiCardHeaderSx: SystemStyleObject<Theme> = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
@@ -45,7 +46,7 @@ export const kpiCardHeaderSx: SxProps<Theme> = {
   mb: 1.25,
 };
 
-export const kpiLabelSx: SxProps<Theme> = {
+export const kpiLabelSx: SystemStyleObject<Theme> = {
   fontSize: 13,
   fontWeight: 600,
   color: "#64748B",
@@ -54,7 +55,7 @@ export const kpiLabelSx: SxProps<Theme> = {
   minWidth: 0,
 };
 
-export const kpiValueSx: SxProps<Theme> = {
+export const kpiValueSx: SystemStyleObject<Theme> = {
   fontSize: { xs: 26, md: 30 },
   fontWeight: 800,
   lineHeight: 1.15,
@@ -63,21 +64,21 @@ export const kpiValueSx: SxProps<Theme> = {
   fontFeatureSettings: '"tnum"',
 };
 
-export const kpiValueOfferSx: SxProps<Theme> = {
+export const kpiValueOfferSx: SystemStyleObject<Theme> = {
   fontSize: { xs: 18, md: 20 },
   fontWeight: 700,
   lineHeight: 1.35,
   color: "#0F172A",
 };
 
-export const kpiSubtitleSx: SxProps<Theme> = {
+export const kpiSubtitleSx: SystemStyleObject<Theme> = {
   fontSize: 13,
   fontWeight: 500,
   color: "#64748B",
   mt: 0.75,
 };
 
-export const kpiIconBoxSx: SxProps<Theme> = {
+export const kpiIconBoxSx: SystemStyleObject<Theme> = {
   width: 40,
   height: 40,
   borderRadius: "12px",

@@ -40,12 +40,12 @@ function StatCard({ stat, index }: { stat: StatItem; index: number }) {
             </Box>
           )}
         </Box>
-        <Box sx={{ ...kpiIconBoxSx, bgcolor: stat.iconBg }}>
+        <Box sx={[kpiIconBoxSx, { bgcolor: stat.iconBg }]}>
           <Iconify icon={stat.icon} width={20} sx={{ color: stat.iconColor }} />
         </Box>
       </Box>
 
-      <Typography sx={{ ...kpiValueSx, mb: 0 }}>{stat.value}</Typography>
+      <Typography sx={[kpiValueSx, { mb: 0 }]}>{stat.value}</Typography>
     </DashboardCard>
   );
 }

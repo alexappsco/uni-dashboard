@@ -1,15 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { Box } from "@mui/material";
 import type { Props } from "react-apexcharts";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
+function subscribe() {
+  return () => {};
+}
+
+function getClientSnapshot() {
+  return true;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
 /**
  * ApexCharts can throw when mask/gradient animations run after unmount
- * (e.g. Fast Refresh). Render only after mount and disable animations.
+ * (e.g. Fast Refresh). Render only on client and disable animations.
  */
 export default function ApexChart({
   options = {},
@@ -17,11 +29,11 @@ export default function ApexChart({
   width,
   ...rest
 }: Props) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot
+  );
 
   const safeOptions = {
     ...options,

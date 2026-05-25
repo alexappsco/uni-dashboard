@@ -35,10 +35,12 @@ export default function KpiCards() {
             <Box sx={kpiCardHeaderSx}>
               <Typography sx={kpiLabelSx}>{card.label}</Typography>
               <Box
-                sx={{
-                  ...kpiIconBoxSx,
-                  bgcolor: "iconBg" in card ? card.iconBg : "#FFF1EB",
-                }}
+                sx={[
+                  kpiIconBoxSx,
+                  {
+                    bgcolor: "iconBg" in card ? card.iconBg : "#FFF1EB",
+                  },
+                ]}
               >
                 <Iconify
                   icon={card.icon}
@@ -53,7 +55,7 @@ export default function KpiCards() {
             </Typography>
 
             {isOfferCard && (
-              <Typography sx={{ ...kpiSubtitleSx, mt: 0.5 }}>{card.subtitle}</Typography>
+              <Typography sx={[kpiSubtitleSx, { mt: 0.5 }]}>{card.subtitle}</Typography>
             )}
           </DashboardCard>
         );
