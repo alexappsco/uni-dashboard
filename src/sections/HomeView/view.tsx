@@ -25,15 +25,17 @@ export default function HomeView() {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: { xs: "1fr", lg: "65% 35%" },
+          gridTemplateColumns: { xs: "1fr", lg: "2fr 1fr" },
           gap: 3,
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 3, minWidth: 0 }}>
           <MostUsedOffersCard />
           <BranchPerformanceChart />
         </Box>
-        <NotificationsCard />
+        <Box sx={{ minWidth: 0 }}>
+          <NotificationsCard />
+        </Box>
       </Box>
     </Box>
   );

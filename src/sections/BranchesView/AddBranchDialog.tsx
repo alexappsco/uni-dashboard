@@ -233,7 +233,7 @@ export default function AddBranchDialog({
                 </Typography>
                 <TextField
                   fullWidth
-                  placeholder="ادخل اسم الفرع"
+                  // placeholder="ادخل اسم الفرع"
                   value={newBranch.name}
                   onChange={(e) =>
                     setNewBranch({ ...newBranch, name: e.target.value })
@@ -261,7 +261,7 @@ export default function AddBranchDialog({
                 </Typography>
                 <TextField
                   fullWidth
-                  placeholder="BR-006 (اختياري)"
+                  // placeholder="BR-006 (اختياري)"
                   value={newBranch.branchNumber}
                   onChange={(e) =>
                     setNewBranch({ ...newBranch, branchNumber: e.target.value })
@@ -321,7 +321,7 @@ export default function AddBranchDialog({
                 </Typography>
                 <TextField
                   fullWidth
-                  placeholder="ادخل العنوان بالتفصيل"
+                  // placeholder="ادخل العنوان بالتفصيل"
                   value={newBranch.address}
                   onChange={(e) =>
                     setNewBranch({ ...newBranch, address: e.target.value })

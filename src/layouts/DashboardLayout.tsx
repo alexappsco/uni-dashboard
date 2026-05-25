@@ -31,8 +31,19 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         }}
       >
         <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-        <Box sx={{ flex: 1, p: 4, bgcolor: "#f9fafb", color: "#171717" }}>
-          {children}
+        <Box
+          sx={{
+            flex: 1,
+            p: 4,
+            bgcolor: "#f9fafb",
+            color: "#171717",
+            minWidth: 0,
+            maxWidth: "100%",
+          }}
+        >
+          <Box sx={{ maxWidth: "1536px", mx: "auto", width: "100%" }}>
+            {children}
+          </Box>
         </Box>
       </Box>
     </Box>
