@@ -120,16 +120,16 @@ const TABLE_HEAD = [
       </Typography>
     ),
     renderCell: (row: Follower) => (
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
         <Box
           component="img"
           src={"/avatar.jpg"}
           alt={row.name}
-          sx={{ width: 32, height: 32, borderRadius: "50%" }}
+          sx={{ width: 55, height: 55, borderRadius: "50%" }}
         />
         <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Typography sx={{ fontWeight: 600 }}>{row.name}</Typography>
-          <Typography variant="caption" sx={{ color: "#6b7280" }}>
+          <Typography sx={{ fontWeight: 600, fontSize: 16 }}>{row.name}</Typography>
+          <Typography variant="caption" sx={{ color: "#6b7280", fontSize: 14 }}>
             {row.email}
           </Typography>
         </Box>

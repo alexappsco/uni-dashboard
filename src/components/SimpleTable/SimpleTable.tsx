@@ -26,6 +26,7 @@ function SimpleTable<T extends { id: string | number }>({
   data,
   headCells,
   actions,
+  actionsHeaderLabel = "إجراءات",
   customRender,
   onRowClick,
   loading = false,
@@ -125,7 +126,7 @@ function SimpleTable<T extends { id: string | number }>({
                   align="center"
                   sx={{ fontWeight: 600, color: "#6b7280" }}
                 >
-                  إجراءات
+                  {actionsHeaderLabel}
                 </TableCell>
               )}
             </TableRow>
