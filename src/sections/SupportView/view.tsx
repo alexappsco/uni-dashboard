@@ -20,6 +20,7 @@ interface SupportTicket {
   ticketNumber: string;
   requestDate: string;
   title: string;
+  description: string;
   status: "answered" | "underReview";
 }
 
@@ -29,6 +30,8 @@ const DUMMY_SUPPORT_TICKETS: SupportTicket[] = [
     ticketNumber: "TCK-1001",
     requestDate: "2026-05-20",
     title: "مشكلة في تسجيل الدخول",
+    description:
+      "لا أستطيع تسجيل الدخول إلى حسابي منذ أمس. تظهر رسالة خطأ عند إدخال البريد وكلمة المرور الصحيحين.",
     status: "underReview",
   },
   {
@@ -36,6 +39,8 @@ const DUMMY_SUPPORT_TICKETS: SupportTicket[] = [
     ticketNumber: "TCK-1002",
     requestDate: "2026-05-19",
     title: "طلب تحديث بيانات الحساب",
+    description:
+      "أرغب في تحديث رقم الجوال والبريد الإلكتروني المرتبط بالحساب بعد تغيير بيانات التواصل.",
     status: "answered",
   },
   {
@@ -43,6 +48,8 @@ const DUMMY_SUPPORT_TICKETS: SupportTicket[] = [
     ticketNumber: "TCK-1003",
     requestDate: "2026-05-18",
     title: "استفسار عن الفاتورة",
+    description:
+      "أحتاج توضيحاً لبند رسوم الاشتراك في فاتورة مايو 2026 وهل يشمل ضريبة القيمة المضافة.",
     status: "answered",
   },
   {
@@ -50,6 +57,8 @@ const DUMMY_SUPPORT_TICKETS: SupportTicket[] = [
     ticketNumber: "TCK-1004",
     requestDate: "2026-05-17",
     title: "تعذر الوصول إلى لوحة التحكم",
+    description:
+      "عند فتح لوحة التحكم تبقى الصفحة فارغة ولا تظهر أي بيانات. جربت متصفحاً آخر ونفس المشكلة.",
     status: "underReview",
   },
   {
@@ -57,6 +66,8 @@ const DUMMY_SUPPORT_TICKETS: SupportTicket[] = [
     ticketNumber: "TCK-1005",
     requestDate: "2026-05-16",
     title: "طلب إلغاء خدمة إضافية",
+    description:
+      "أود إلغاء خدمة التقارير المتقدمة المفعلة على الحساب اعتباراً من نهاية الشهر الحالي.",
     status: "answered",
   },
 ];
@@ -75,6 +86,10 @@ export default function SupportView() {
   >("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [openTicketDialog, setOpenTicketDialog] = useState(false);
+  const [openViewDialog, setOpenViewDialog] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(
+    null
+  );
   const [complaintTitle, setComplaintTitle] = useState("");
   const [complaintDescription, setComplaintDescription] = useState("");
 
@@ -145,6 +160,7 @@ export default function SupportView() {
         ticketNumber: nextTicketNumber,
         requestDate: today,
         title: complaintTitle.trim(),
+        description: complaintDescription.trim(),
         status: "underReview",
       },
       ...current,
@@ -152,13 +168,21 @@ export default function SupportView() {
     handleCloseTicketDialog();
   };
 
+  const handleOpenViewDialog = (ticket: SupportTicket) => {
+    setSelectedTicket(ticket);
+    setOpenViewDialog(true);
+  };
+
+  const handleCloseViewDialog = () => {
+    setOpenViewDialog(false);
+    setSelectedTicket(null);
+  };
+
   const actions = [
     {
       label: "عرض",
       icon: <Iconify icon="solar:eye-bold" />,
-      onClick: (row: SupportTicket) => {
-        console.log("View support ticket:", row);
-      },
+      onClick: (row: SupportTicket) => handleOpenViewDialog(row),
     },
   ];
 
@@ -361,6 +385,112 @@ export default function SupportView() {
           customRender={customRender}
         />
       </Card>
+
+      <Dialog
+        open={openViewDialog}
+        onClose={handleCloseViewDialog}
+        maxWidth="sm"
+        fullWidth
+        disableScrollLock
+        slotProps={{
+          paper: {
+            sx: {
+              borderRadius: "20px",
+              boxShadow: "0 16px 40px rgba(15, 23, 42, 0.12)",
+              bgcolor: "#fff",
+            },
+          },
+        }}
+      >
+        <DialogContent sx={{ p: { xs: 3, sm: 4 } }} dir="rtl">
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              mb: 3,
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 800, color: "#101828", fontSize: 20 }}
+            >
+              تفاصيل الشكوى
+            </Typography>
+            <Button
+              onClick={handleCloseViewDialog}
+              sx={{
+                minWidth: 40,
+                width: 40,
+                height: 40,
+                borderRadius: "10px",
+                color: "#667085",
+                p: 0,
+                "&:hover": { bgcolor: "#f3f4f6" },
+              }}
+            >
+              <Iconify icon="mingcute:close-line" width={20} />
+            </Button>
+          </Box>
+
+          {selectedTicket && (
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+              <Box>
+                <Typography
+                  sx={{ color: "#667085", fontSize: 14, fontWeight: 500, mb: 0.75 }}
+                >
+                  عنوان الشكوى
+                </Typography>
+                <Typography
+                  sx={{ color: "#101828", fontSize: 16, fontWeight: 700, lineHeight: 1.6 }}
+                >
+                  {selectedTicket.title}
+                </Typography>
+              </Box>
+
+              <Box>
+                <Typography
+                  sx={{ color: "#667085", fontSize: 14, fontWeight: 500, mb: 0.75 }}
+                >
+                  وصف الشكوى
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#344054",
+                    fontSize: 15,
+                    lineHeight: 1.8,
+                    whiteSpace: "pre-wrap",
+                  }}
+                >
+                  {selectedTicket.description}
+                </Typography>
+              </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "flex-end", pt: 1 }}>
+                <Button
+                  variant="outlined"
+                  onClick={handleCloseViewDialog}
+                  sx={{
+                    borderRadius: "12px",
+                    fontWeight: 700,
+                    height: 44,
+                    px: 4,
+                    borderColor: "#E5E7EB",
+                    color: "#344054",
+                    textTransform: "none",
+                    "&:hover": {
+                      borderColor: "#D1D5DB",
+                      bgcolor: "#F9FAFB",
+                    },
+                  }}
+                >
+                  إغلاق
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <Dialog
         open={openTicketDialog}
