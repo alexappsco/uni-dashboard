@@ -169,7 +169,7 @@ export default function GeneralInfo() {
         >
           <Box
             component="img"
-            src="/images/upload-logo.svg"
+            src="/icons/upload.svg"
             alt="logo"
             sx={{
               width: 90,

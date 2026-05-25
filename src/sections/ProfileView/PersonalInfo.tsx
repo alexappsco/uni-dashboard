@@ -47,7 +47,6 @@ export default function PersonalInfo() {
   </Grid>
 </Grid>
 
-      {/* رفع صورة الهوية */}
       <Box
         sx={{
           mt: 3,
@@ -65,7 +64,7 @@ export default function PersonalInfo() {
       >
         <Box
           component="img"
-          src="/images/upload-id.svg"
+          src="/icons/upload.svg"
           alt="upload"
           sx={{
             width: 90,
@@ -135,7 +134,6 @@ export default function PersonalInfo() {
         </Stack>
       </Alert>
 
-      {/* زر التعديل */}
       <Box
         sx={{
           mt: 3,

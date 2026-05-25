@@ -31,37 +31,41 @@ export default function ProfilePage() {
         bgcolor: '#fff',
       }}
     >
-      {/* Tabs ثابتة */}
       <Tabs
-        value={tab}
-        onChange={(_, value) => setTab(value)}
-        textColor="inherit"
-        indicatorColor="primary"
-        sx={{
-          px: 3,
-          borderBottom: '1px solid #E5E7EB',
+  value={tab}
+  onChange={(_, value) => setTab(value)}
+  textColor="inherit"
+  indicatorColor="primary"
+  sx={{
+    px: 3,
+    borderBottom: '1px solid #E5E7EB',
 
-          '& .MuiTabs-flexContainer': {
-            justifyContent: 'flex-end',
-          },
+    '& .MuiTabs-flexContainer': {
+      justifyContent: 'flex-end',
+    },
 
-          '& .MuiTab-root': {
-            minHeight: 56,
-            fontWeight: 700,
-            color: '#6B7280',
-          },
+    '& .MuiTab-root': {
+      minHeight: 56,
+      minWidth: 'auto',
+      fontWeight: 700,
+      color: '#6B7280',
+      ml: 4, 
+    },
 
-          '& .Mui-selected': {
-            color: '#111827',
-          },
-        }}
-      >
-        <Tab label="البيانات العامة" />
-        <Tab label="البيانات الشخصية" />
-        <Tab label="الأوراق القانونية" />
-      </Tabs>
+    '& .MuiTab-root:first-of-type': {
+      ml: 0,
+    },
 
-      {/* المحتوى المتغير */}
+    '& .Mui-selected': {
+      color: '#111827',
+    },
+  }}
+>
+  <Tab label="البيانات العامة" />
+  <Tab label="البيانات الشخصية" />
+  <Tab label="الأوراق القانونية" />
+</Tabs>
+
       <Box sx={{ p: 3 }}>
         {renderContent()}
       </Box>

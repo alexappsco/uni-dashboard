@@ -112,14 +112,96 @@ export default function LegalDocuments() {
                   gap: 2,
                 }}
               >
-                {/* بيانات الملف */}
+                <Stack
+  sx={{
+    flexDirection: {
+      xs: 'column',
+      sm: 'row',
+    },
+    gap: 1.5,
+    alignItems: {
+      xs: 'stretch',
+      sm: 'center',
+    },
+  }}
+>
+                <Stack sx={{direction: 'column', gap: 1.5, alignItems: 'flex-start'}}>
+ 
+  <Box
+    sx={{
+      px: 1.5,
+      py: 0.5,
+      borderRadius: 1,
+      bgcolor: doc.statusColor,
+      color: doc.statusTextColor,
+      fontSize: 12,
+      fontWeight: 700,
+      textAlign: 'center',
+      whiteSpace: 'nowrap',
+    }}
+  >
+    {doc.status}
+  </Box>
+
+  <Button
+  variant="contained"
+  startIcon={<CloudUploadOutlinedIcon />}
+  sx={{
+    bgcolor: '#1F2937',
+    minWidth: 130,
+    borderRadius: 2,
+
+    '& .MuiButton-startIcon': {
+      marginInlineEnd: 1.5, 
+    },
+
+    '&:hover': {
+      bgcolor: '#111827',
+    },
+  }}
+>
+  رفع الملفات
+</Button>
+</Stack>
+                </Stack>
                 <Box
                   sx={{
                     display: 'flex',
-                    gap: 2,
+                    gap: 1.5,
                     alignItems: 'center',
                   }}
                 >
+                  
+
+                  <Box
+  sx={{
+    display: 'flex',
+    flexDirection: 'column',
+  }}
+>
+  <Typography
+    variant="body2"
+    color="text.secondary"
+    sx={{ fontWeight: 400, fontSize: 12 }}
+  >
+    الرقم المرجعي: {doc.reference}
+  </Typography>
+
+  <Typography sx={{ fontWeight: 700, mt: 0.5 }}>
+    {doc.title}
+  </Typography>
+
+  <Typography
+    variant="caption"
+    color="text.secondary"
+    sx={{
+      alignSelf: 'flex-end',
+      mt: 1,
+    }}
+  >
+    {doc.files}
+  </Typography>
+</Box>
                   <Box
                     sx={{
                       width: 44,
@@ -139,74 +221,7 @@ export default function LegalDocuments() {
                       }}
                     />
                   </Box>
-
-                  <Box>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                    >
-                      الرقم المرجعي: {doc.reference}
-                    </Typography>
-
-                    <Typography sx={{ fontWeight: 700, mt: 0.5  }}>
-                      {doc.title}
-                    </Typography>
-
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                    >
-                      {doc.files}
-                    </Typography>
-                  </Box>
                 </Box>
-
-                {/* الحالة + زر الرفع */}
-              <Stack
-  sx={{
-    flexDirection: {
-      xs: 'column',
-      sm: 'row',
-    },
-    gap: 1.5,
-    alignItems: {
-      xs: 'stretch',
-      sm: 'center',
-    },
-  }}
->
-                  <Box
-                    sx={{
-                      px: 1.5,
-                      py: 0.5,
-                      borderRadius: 1,
-                      bgcolor: doc.statusColor,
-                      color: doc.statusTextColor,
-                      fontSize: 12,
-                      fontWeight: 700,
-                      textAlign: 'center',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {doc.status}
-                  </Box>
-
-                  <Button
-                    variant="contained"
-                    startIcon={<CloudUploadOutlinedIcon />}
-                    sx={{
-                      bgcolor: '#1F2937',
-                      minWidth: 130,
-                      borderRadius: 2,
-
-                      '&:hover': {
-                        bgcolor: '#111827',
-                      },
-                    }}
-                  >
-                    رفع الملفات
-                  </Button>
-                </Stack>
               </Box>
 
               {/* سبب الرفض */}
@@ -231,23 +246,27 @@ export default function LegalDocuments() {
       </Paper>
 
       {/* زر التعديل */}
-      <Box>
-        <Button
-          variant="contained"
-          sx={{
-            minWidth: 120,
-            height: 46,
-            borderRadius: 2,
-            bgcolor: '#8B6FF5',
+     <Box
+  sx={{
+    marginInlineStart: 'auto',
+  }}
+>
+  <Button
+    variant="contained"
+    sx={{
+      minWidth: 120,
+      height: 46,
+      borderRadius: 2,
+      bgcolor: '#8B6FF5',
 
-            '&:hover': {
-              bgcolor: '#7C5CF0',
-            },
-          }}
-        >
-          تعديل
-        </Button>
-      </Box>
+      '&:hover': {
+        bgcolor: '#7C5CF0',
+      },
+    }}
+  >
+    تعديل
+  </Button>
+</Box>
     </Stack>
   );
 }

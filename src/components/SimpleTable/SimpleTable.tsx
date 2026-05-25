@@ -104,9 +104,12 @@ function SimpleTable<T extends { id: string | number }>({
                     color: "#6b7280",
                     whiteSpace: "nowrap",
                     verticalAlign: "middle",
-                    textAlign:
-                      (headCell.align as React.CSSProperties["textAlign"]) ||
-                      "left",
+                    // textAlign:
+                    //   (headCell.align as React.CSSProperties["textAlign"]) ||
+                    //   "left",
+                            textAlign:
+          (headCell.align as React.CSSProperties["textAlign"]) ||
+          "center",
                     py: dense ? 1.5 : 2,
                     px: dense ? 1.5 : 2,
                     borderBottom: "1px solid #e5e7eb",
@@ -166,8 +169,8 @@ function SimpleTable<T extends { id: string | number }>({
                         whiteSpace: "nowrap",
                         verticalAlign: "middle",
                         textAlign:
-                          (headCell.align as React.CSSProperties["textAlign"]) ||
-                          "left",
+                        (headCell.align as React.CSSProperties["textAlign"]) ||
+                        "center",
                         py: dense ? 1.5 : 2,
                         px: dense ? 1.5 : 2,
                         color: index === 0 ? "#111827" : "#4b5563",
