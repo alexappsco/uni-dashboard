@@ -133,52 +133,54 @@ const [openDialog, setOpenDialog] = useState(false);
         
 
           <TextField
-            fullWidth
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="أدخل الكود"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchRoundedIcon
-                    sx={{
-                      color: '#6B7280',
-                    }}
-                  />
-                </InputAdornment>
-              ),
-            }}
+  fullWidth
+  value={code}
+  onChange={(e) => setCode(e.target.value)}
+  placeholder="أدخل الكود"
+  slotProps={{
+    input: {
+      endAdornment: (
+        <InputAdornment position="end">
+          <SearchRoundedIcon
             sx={{
-              maxWidth: {
-                xs: '100%',
-                sm: 340,
-              },
-
-              '& .MuiOutlinedInput-root': {
-                height: 48,
-                borderRadius: '10px',
-                bgcolor: '#fff',
-
-                '& fieldset': {
-                  borderColor: '#D9DDE8',
-                },
-
-                '&:hover fieldset': {
-                  borderColor: '#C8CFDA',
-                },
-
-                '&.Mui-focused fieldset': {
-                  borderColor: '#7B61FF',
-                },
-              },
-
-              '& input': {
-                textAlign: 'right',
-                fontSize: '15px',
-                fontWeight: 500,
-              },
+              color: '#6B7280',
             }}
           />
+        </InputAdornment>
+      ),
+    },
+  }}
+  sx={{
+    maxWidth: {
+      xs: '100%',
+      sm: 340,
+    },
+
+    '& .MuiOutlinedInput-root': {
+      height: 48,
+      borderRadius: '10px',
+      bgcolor: '#fff',
+
+      '& fieldset': {
+        borderColor: '#D9DDE8',
+      },
+
+      '&:hover fieldset': {
+        borderColor: '#C8CFDA',
+      },
+
+      '&.Mui-focused fieldset': {
+        borderColor: '#7B61FF',
+      },
+    },
+
+    '& input': {
+      textAlign: 'right',
+      fontSize: '15px',
+      fontWeight: 500,
+    },
+  }}
+/>
             <Button
   variant="contained"
   onClick={() => setOpenDialog(true)}

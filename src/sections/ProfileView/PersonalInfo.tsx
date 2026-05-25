@@ -134,7 +134,6 @@ export default function PersonalInfo() {
         </Stack>
       </Alert>
 
-      {/* زر التعديل */}
       <Box
         sx={{
           mt: 3,

@@ -22,23 +22,25 @@ export default function InvalidCodeDialog({
   onClose,
 }: Props) {
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      fullWidth
-      maxWidth="sm"
-      PaperProps={{
-        sx: {
-          borderRadius: '28px',
-          overflow: 'hidden',
-          width: '100%',
-          maxWidth: {
-            xs: '95%',
-            sm: 520,
-          },
+   <Dialog
+  open={open}
+  onClose={onClose}
+  fullWidth
+  maxWidth="sm"
+  slotProps={{
+    paper: {
+      sx: {
+        borderRadius: '28px',
+        overflow: 'hidden',
+        width: '100%',
+        maxWidth: {
+          xs: '95%',
+          sm: 520,
         },
-      }}
-    >
+      },
+    },
+  }}
+>
       <DialogContent
         sx={{
           p: {

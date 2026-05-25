@@ -217,26 +217,25 @@ const [openDelete, setOpenDelete] = useState(false);
   >
     {/* Search */}
     <TextField
-      fullWidth
-      placeholder="البحث في الموظفين..."
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <Iconify
-              icon="solar:magnifer-linear"
-              width={20}
-            />
-          </InputAdornment>
-        ),
-      }}
-      sx={{
-        "& .MuiOutlinedInput-root": {
-          height: 48,
-          borderRadius: "10px",
-          bgcolor: "#fff",
-        },
-      }}
-    />
+  fullWidth
+  placeholder="البحث في الموظفين..."
+  slotProps={{
+    input: {
+      startAdornment: (
+        <InputAdornment position="start">
+          <Iconify icon="solar:magnifer-linear" width={20} />
+        </InputAdornment>
+      ),
+    },
+  }}
+  sx={{
+    "& .MuiOutlinedInput-root": {
+      height: 48,
+      borderRadius: "10px",
+      bgcolor: "#fff",
+    },
+  }}
+/>
 
     {/* Role */}
     <TextField

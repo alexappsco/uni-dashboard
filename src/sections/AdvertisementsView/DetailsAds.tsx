@@ -1,12 +1,10 @@
 'use client';
-
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   Box,
   Typography,
-  Button,
   IconButton,
   Chip,
   Divider,
@@ -14,9 +12,8 @@ import {
 
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
-import InvalidCodeDialog from './InvalidCodeDialog';
 
-type VerifyCodeDialogProps = {
+type DetailsAdsProps = {
   open: boolean;
   onClose: () => void;
 };
@@ -64,10 +61,10 @@ const RowItem = ({
   </Box>
 );
 
-export default function VerifyCodeDialog({
+export default function DetailsAds({
   open,
   onClose,
-}: VerifyCodeDialogProps) {
+}: DetailsAdsProps) {
   const [openErrorDialog, setOpenErrorDialog] = useState(false);
   return (
     <>
@@ -123,7 +120,7 @@ export default function VerifyCodeDialog({
         {/* Image */}
         <Box
           component="img"
-          src="/images/burger.jpg"
+          src="/assets/burger.png"
           alt="advertisement"
           sx={{
             width: '100%',
@@ -230,55 +227,8 @@ export default function VerifyCodeDialog({
             </Typography>
           </Box>
         </Box>
-
-        {/* Footer Buttons */}
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 1.5,
-            justifyContent: 'flex-end',
-            flexWrap: 'wrap',
-          }}
-        >
-          
-
-          <Button
-            variant="outlined"
-            onClick={onClose}
-            sx={{
-              minWidth: 90,
-              height: 42,
-              borderRadius: '8px',
-              borderColor: '#CBD5E1',
-              color: '#111827',
-
-              '&:hover': {
-                borderColor: '#94A3B8',
-              },
-            }}
-          >
-            إلغاء
-          </Button>
-          <Button
-  variant="contained"
-  onClick={() => setOpenErrorDialog(true)}
-  sx={{
-    height: 48,
-    minWidth: 170,
-    bgcolor: '#6D4CFF',
-    borderRadius: '12px',
-    fontWeight: 700,
-  }}
->
-  تأكيد استخدام الكود
-</Button>
-        </Box>
       </DialogContent>
     </Dialog>
-    <InvalidCodeDialog
-  open={openErrorDialog}
-  onClose={() => setOpenErrorDialog(false)}
-/>
     
     </>
    

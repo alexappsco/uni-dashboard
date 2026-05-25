@@ -1,19 +1,4 @@
-// "use client";
 
-// import { Box, Typography } from "@mui/material";
-
-// export default function PackagesView() {
-//   return (
-//     <Box sx={{ textAlign: "right" }}>
-//       <Typography variant="h4" sx={{ fontWeight: 800 }}>
-//         الباقات
-//       </Typography>
-//       <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
-//         تكوين وبناء باقات الاشتراكات والمميزات المقدمة
-//       </Typography>
-//     </Box>
-//   );
-// }
 'use client';
 import { Box, Typography, Button, Paper, Stack, Chip } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -67,7 +52,6 @@ export default function PackagesManagement() {
             </Stack>
           </Box>
 
-          {/* DATE (ميعاد التجديد على اليمين) */}
           <Stack sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 1.5, mt: 4 }}>
             <CalendarMonthOutlinedIcon sx={{ color: '#8B3DFF' }} />
             <Typography sx={{ fontSize: 16, fontWeight: 500, color: '#334E75' }}>ميعاد التجديد: 02/01/2026</Typography>
@@ -78,7 +62,6 @@ export default function PackagesManagement() {
   );
 }
 
-/* FEATURE ITEM (الأيقونات بجانب النص) */
 function FeatureItem({ text }: { text: string }) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>

@@ -15,6 +15,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useRouter } from 'next/dist/client/components/navigation';
 
 type EmployeesProps = {
   mode?: 'create' | 'edit';
@@ -38,7 +39,7 @@ function Employees({
   const [openRoles, setOpenRoles] = useState(true);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [branch, setBranch] = useState('');
-
+  const router = useRouter();
   const isEditMode = mode === 'edit';
 
   const pageTitle = isEditMode
@@ -544,6 +545,7 @@ function Employees({
                     }}
                   >
                     <Button
+                    onClick={()=> {router.push('/employees/custom')}}
                       sx={{
                         color:
                           '#0073E6',

@@ -371,8 +371,8 @@ function FeatureCard({
 
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-start', // 👈 مهم
-        gap: 1, // 👈 المسافة اللي بدك إياها (gap 2 كمان تمام)
+        justifyContent: 'flex-start',
+        gap: 1, 
       }}
     >
       <Box sx={{ color: '#D84315', display: 'flex', alignItems: 'center' }}>
