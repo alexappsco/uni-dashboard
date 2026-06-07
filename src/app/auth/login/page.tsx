@@ -16,6 +16,11 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 export default function LoginPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   return (
     <Box
@@ -53,6 +58,8 @@ export default function LoginPage() {
 
           <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
             <TextField
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="example@gmail.com"
               dir="ltr"
@@ -75,6 +82,8 @@ export default function LoginPage() {
 
             <Box>
               <TextField
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type={showPassword ? "text" : "password"}
                 placeholder="كلمة المرور"
                 dir="rtl"
@@ -122,8 +131,69 @@ export default function LoginPage() {
               </Typography>
             </Box>
 
+            {error && (
+              <Typography sx={{ color: "#ffdddd", fontSize: "0.9rem", textAlign: "right" }}>
+                ⚠️ {error}
+              </Typography>
+            )}
+
+            {success && (
+              <Typography sx={{ color: "#d4edda", fontSize: "0.9rem", textAlign: "right" }}>
+                ✅ {success}
+              </Typography>
+            )}
+
             <Button
-              onClick={() => router.push("/")}
+              onClick={async () => {
+                setError(null);
+                setSuccess(null);
+                setLoading(true);
+                try {
+                  const res = await fetch(
+                    "http://5.189.130.109:3000/v1/auth/signin",
+                    {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ username: email, password }),
+                    },
+                  );
+
+                  const json = await res.json().catch(() => null);
+                  if (!res.ok) {
+                    setError((json && json.message) || "اسم المستخدم أو كلمة المرور غير صحيحة");
+                    setLoading(false);
+                    return;
+                  }
+
+                  const accessToken =
+                    json?.data?.access_token ||
+                    json?.data?.accessToken;
+                  if (!accessToken) {
+                    setError("توكن غير موجود في الاستجابة");
+                    setLoading(false);
+                    return;
+                  }
+
+                  // store cookie, 7 days
+                  document.cookie = `accessToken=${accessToken}; path=/; max-age=${7 * 24 * 60 * 60}`;
+
+                  // store user object
+                  try {
+                    localStorage.setItem("user", JSON.stringify(json.data));
+                  } catch (e) {}
+
+                  setSuccess("تم تسجيل الدخول بنجاح! جاري تحويلك...");
+                  
+                  // redirect after success with a small delay
+                  setTimeout(() => {
+                    router.push("/");
+                  }, 1500);
+                } catch (e) {
+                  setError(e instanceof Error ? e.message : "حدث خطأ");
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
               sx={{
                 bgcolor: "#ebedef",
                 color: "#374151",
@@ -137,7 +207,7 @@ export default function LoginPage() {
                 mt: 4,
               }}
             >
-              تسجيل الدخول
+              {loading ? "جاري المعالجة..." : "تسجيل الدخول"}
             </Button>
           </Box>
         </Box>
