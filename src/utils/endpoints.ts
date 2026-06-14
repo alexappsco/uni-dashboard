@@ -83,5 +83,9 @@ export const endpoints = {
     markAsRead: (id: string) => `/notifications/${id}/mark-as-read`,
     markAllAsRead: '/notifications/mark-all-as-read',
   },
+  packages: {
+    list: '/store/packages',
+    subscribe: (packageId: string) => `/store/subscribe/${packageId}`,
+  },
 };
 
