@@ -1,7 +1,8 @@
 import { paths } from 'src/routes/paths';
 
 // API
-export const HOST_API = process.env.NEXT_PUBLIC_HOST_API;
+export const HOST_API =
+  process.env.NEXT_PUBLIC_HOST_API ?? 'http://5.189.130.109:3000';
 export const ASSETS_API = process.env.NEXT_PUBLIC_ASSETS_API;
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL
