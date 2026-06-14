@@ -98,7 +98,7 @@ export default function BranchDetailsDialog({
             >
               <Box
                 component="img"
-                src="/assets/images/warehouses/branch_default.png"
+                src={(branch as any).logo || "/assets/images/warehouses/branch_default.png"}
                 alt={branch.name}
                 sx={{
                   width: "100%",
@@ -209,6 +209,40 @@ export default function BranchDetailsDialog({
                 </Box>
               </Box>
 
+              {/* Email */}
+              {(branch as any).email && (
+                <Box>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: "#9ca3af",
+                      fontWeight: 600,
+                      display: "block",
+                      mb: 0.25,
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    البريد الإلكتروني
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 0.75,
+                      color: "#374151",
+                    }}
+                  >
+                    <Iconify
+                      icon="solar:letter-bold-duotone"
+                      sx={{ color: "#886ce8", fontSize: 18 }}
+                    />
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                      {(branch as any).email}
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
+
               {/* Status */}
               <Box>
                 <Typography
@@ -317,6 +351,7 @@ export default function BranchDetailsDialog({
               </Typography>
               <Typography variant="caption" sx={{ color: "#9ca3af", fontSize: "0.75rem" }}>
                 إحداثيات الموقع دقيقة على خريطة جوجل للفرع {branch.name}
+                {((branch as any).latitude && (branch as any).longitude) && ` (خط العرض: ${(branch as any).latitude}، خط الطول: ${(branch as any).longitude})`}
               </Typography>
             </Box>
           </Box>

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import MenuIcon from "@mui/icons-material/Menu";
-import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
 import Iconify from "src/components/iconify";
 import NotificationsPopover from "src/components/NotificationsPopover";
 import {
@@ -26,6 +26,20 @@ interface HeaderProps {
 export default function Header({ onMenuClick }: HeaderProps) {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [userName, setUserName] = useState("المستخدم");
+
+  useEffect(() => {
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const parsed = JSON.parse(storedUser);
+        const nameVal = parsed.username || parsed.name || parsed.email || parsed.displayName;
+        if (nameVal) {
+          setUserName(nameVal);
+        }
+      }
+    } catch (e) {}
+  }, []);
 
   const handleMenuOpen = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget);
@@ -87,7 +101,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               variant="body2"
               sx={{ color: "#fff", display: { xs: "none", sm: "block" } }}
             >
-              المستخدم
+              {userName}
             </Typography>
           </Box>
         </Box>
@@ -113,13 +127,20 @@ export default function Header({ onMenuClick }: HeaderProps) {
         <MenuItem
           onClick={() => {
             handleMenuClose();
+            // Clear accessToken cookie
+            document.cookie = "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            // Clear user from localStorage
+            try {
+              localStorage.removeItem("user");
+            } catch (e) {}
+            // Redirect to login page
             router.push("/auth/login");
           }}
         >
           <ListItemIcon>
-            <LoginIcon fontSize="small" />
+            <LogoutIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>تسجيل الدخول</ListItemText>
+          <ListItemText>تسجيل الخروج</ListItemText>
         </MenuItem>
       </Menu>
     </AppBar>

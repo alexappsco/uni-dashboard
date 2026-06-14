@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -16,15 +16,44 @@ import SimpleTable from "src/components/SimpleTable";
 import Iconify from "src/components/iconify";
 import AddBranchDialog from "./AddBranchDialog";
 import BranchDetailsDialog from "./BranchDetailsDialog";
-import { DUMMY_BRANCHES, TABLE_HEAD, Branch } from "./branch-mock-data";
+import { TABLE_HEAD, Branch } from "./branch-mock-data";
 import DeleteDialog from "src/components/dialog/delete";
+import {
+  getBranchesAction,
+  createBranchAction,
+  deleteBranchAction,
+  getBranchAction,
+  updateBranchAction,
+} from "src/actions/branches";
 
-export default function BranchesView() {
+interface BranchesViewProps {
+  initialBranches: Branch[];
+}
+
+export default function BranchesView({ initialBranches }: BranchesViewProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [branches, setBranches] = useState(DUMMY_BRANCHES);
+  const [branches, setBranches] = useState<Branch[]>(initialBranches);
+  const [loading, setLoading] = useState(false);
   const [statusFilter, setStatusFilter] = useState<
     "all" | "active" | "inactive"
   >("all");
+
+  useEffect(() => {
+    async function loadBranches() {
+      try {
+        setLoading(true);
+        const result = await getBranchesAction();
+        if (result.success) {
+          setBranches(result.data);
+        }
+      } catch (error) {
+        console.error("Error loading branches:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadBranches();
+  }, []);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
@@ -60,46 +89,130 @@ export default function BranchesView() {
   const activeCount = branches.filter((b) => b.status === "active").length;
   const inactiveCount = branches.filter((b) => b.status === "inactive").length;
 
-  const handleAddBranch = (newBranchData: Omit<Branch, "id">) => {
-    const branchToAdd: Branch = {
-      id: (branches.length + 1).toString(),
-      ...newBranchData,
-    };
-    setBranches([...branches, branchToAdd]);
-    setOpenAddDialog(false);
-  };
-
-  const handleEditBranch = (updatedBranch: Branch) => {
-    setBranches((current) =>
-      current.map((b) => (b.id === updatedBranch.id ? updatedBranch : b))
-    );
-    setOpenAddDialog(false);
-    setSelectedBranch(null);
-  };
-
-  const handleDeleteConfirm = () => {
-    if (branchToDelete) {
-      setBranches((current) => current.filter((b) => b.id !== branchToDelete.id));
+  const handleAddBranch = async (newBranchData: any) => {
+    try {
+      setLoading(true);
+      const res = await createBranchAction({
+        name: newBranchData.name,
+        email: newBranchData.email,
+        address: newBranchData.address,
+        latitude: parseFloat(newBranchData.latitude) || 24.7136,
+        longitude: parseFloat(newBranchData.longitude) || 46.6758,
+        city_id: newBranchData.city_id || "1",
+      });
+      if (res.success) {
+        const result = await getBranchesAction();
+        if (result.success) {
+          setBranches(result.data);
+        }
+        setOpenAddDialog(false);
+      } else {
+        alert(res.error || "حدث خطأ أثناء إضافة الفرع");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("حدث خطأ غير متوقع");
+    } finally {
+      setLoading(false);
     }
-    setOpenDeleteDialog(false);
-    setBranchToDelete(null);
+  };
+
+  const handleEditBranch = async (updatedBranch: any) => {
+    try {
+      setLoading(true);
+      const res = await updateBranchAction(updatedBranch.id, {
+        branch_id: updatedBranch.id,
+        name: updatedBranch.name,
+        email: updatedBranch.email,
+        address: updatedBranch.address,
+        latitude: parseFloat(updatedBranch.latitude) || 24.7136,
+        longitude: parseFloat(updatedBranch.longitude) || 46.6758,
+        city_id: updatedBranch.city_id,
+        is_active: updatedBranch.status === "active",
+      });
+
+      if (res.success) {
+        const result = await getBranchesAction();
+        if (result.success) {
+          setBranches(result.data);
+        }
+        setOpenAddDialog(false);
+        setSelectedBranch(null);
+      } else {
+        alert(res.error || "حدث خطأ أثناء تعديل الفرع");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("حدث خطأ غير متوقع");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!branchToDelete) return;
+    try {
+      setLoading(true);
+      const res = await deleteBranchAction(branchToDelete.id);
+      if (res.success) {
+        const result = await getBranchesAction();
+        if (result.success) {
+          setBranches(result.data);
+        }
+      } else {
+        alert(res.error || "حدث خطأ أثناء حذف الفرع");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("حدث خطأ غير متوقع");
+    } finally {
+      setLoading(false);
+      setOpenDeleteDialog(false);
+      setBranchToDelete(null);
+    }
   };
 
   const actions = [
     {
       label: "عرض",
       icon: <Iconify icon="solar:eye-bold" />,
-      onClick: (row: Branch) => {
-        setSelectedBranch(row);
-        setOpenDetailsDialog(true);
+      onClick: async (row: Branch) => {
+        try {
+          setLoading(true);
+          const res = await getBranchAction(row.id);
+          if (res.success && res.data) {
+            setSelectedBranch(res.data);
+            setOpenDetailsDialog(true);
+          } else {
+            alert(res.error || "حدث خطأ أثناء جلب تفاصيل الفرع");
+          }
+        } catch (error) {
+          console.error(error);
+          alert("حدث خطأ غير متوقع");
+        } finally {
+          setLoading(false);
+        }
       },
     },
     {
       label: "تعديل",
       icon: <Iconify icon="solar:pen-bold" />,
-      onClick: (row: Branch) => {
-        setSelectedBranch(row);
-        setOpenAddDialog(true);
+      onClick: async (row: Branch) => {
+        try {
+          setLoading(true);
+          const res = await getBranchAction(row.id);
+          if (res.success && res.data) {
+            setSelectedBranch(res.data);
+            setOpenAddDialog(true);
+          } else {
+            alert(res.error || "حدث خطأ أثناء جلب تفاصيل الفرع");
+          }
+        } catch (error) {
+          console.error(error);
+          alert("حدث خطأ غير متوقع");
+        } finally {
+          setLoading(false);
+        }
       },
     },
     {
@@ -362,6 +475,7 @@ export default function BranchesView() {
           headCells={TABLE_HEAD}
           actions={actions}
           customRender={customRender}
+          loading={loading}
         />
       </Card>
 

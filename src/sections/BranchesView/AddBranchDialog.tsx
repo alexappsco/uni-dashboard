@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import Iconify from "src/components/iconify";
 import { Branch } from "./branch-mock-data";
+import { getCitiesAction } from "src/actions/branches";
 
 interface AddBranchDialogProps {
   open: boolean;
@@ -31,51 +32,72 @@ export default function AddBranchDialog({
   const [newBranch, setNewBranch] = React.useState({
     branchNumber: "",
     name: "",
+    email: "",
     address: "",
     status: "active" as "active" | "inactive",
+    latitude: 24.7136,
+    longitude: 46.6758,
+    city_id: "",
   });
+  const [cities, setCities] = React.useState<{ id: string; name_ar: string; name_en: string }[]>([]);
+
+  React.useEffect(() => {
+    getCitiesAction().then((res) => {
+      if (res.success) setCities(res.data);
+    });
+  }, []);
 
   React.useEffect(() => {
     if (branchToEdit) {
       setNewBranch({
         branchNumber: branchToEdit.branchNumber,
         name: branchToEdit.name,
+        email: (branchToEdit as any).email || "",
         address: branchToEdit.address,
         status: branchToEdit.status,
+        latitude: (branchToEdit as any).latitude || 24.7136,
+        longitude: (branchToEdit as any).longitude || 46.6758,
+        city_id: (branchToEdit as any).city_id || "1",
       });
     } else {
       setNewBranch({
         branchNumber: "",
         name: "",
+        email: "",
         address: "",
         status: "active",
+        latitude: 24.7136,
+        longitude: 46.6758,
+        city_id: "",
       });
     }
   }, [branchToEdit, open]);
 
   const handleAdd = () => {
-    if (!newBranch.name || !newBranch.address) {
-      alert("يرجى ملء جميع الحقول المطلوبة");
+    if (!newBranch.name || !newBranch.address || !newBranch.email || !newBranch.city_id) {
+      alert("يرجى ملء جميع الحقول المطلوبة (الاسم، البريد الإلكتروني، العنوان، والمدينة)");
       return;
     }
 
     if (branchToEdit) {
       if (onEdit) {
         onEdit({
+          ...newBranch,
           id: branchToEdit.id,
           branchNumber: newBranch.branchNumber || branchToEdit.branchNumber,
-          name: newBranch.name,
-          address: newBranch.address,
-          status: newBranch.status,
-        });
+        } as any);
       }
     } else {
       onAdd({
         branchNumber: newBranch.branchNumber || `BR-${Date.now()}`,
         name: newBranch.name,
+        email: newBranch.email,
         address: newBranch.address,
         status: newBranch.status,
-      });
+        latitude: newBranch.latitude,
+        longitude: newBranch.longitude,
+        city_id: newBranch.city_id,
+      } as any);
     }
   };
 
@@ -83,8 +105,12 @@ export default function AddBranchDialog({
     setNewBranch({
       branchNumber: "",
       name: "",
+      email: "",
       address: "",
       status: "active",
+      latitude: 24.7136,
+      longitude: 46.6758,
+      city_id: "",
     });
     onClose();
   };
@@ -251,6 +277,33 @@ export default function AddBranchDialog({
                 />
               </Box>
 
+              {/* Email */}
+              <Box sx={{ gridColumn: "span 2" }}>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 600, mb: 0.5, color: "#374151", fontSize: "0.85rem" }}
+                >
+                  البريد الإلكتروني <span style={{ color: "#ef4444" }}>*</span>
+                </Typography>
+                <TextField
+                  fullWidth
+                  type="email"
+                  value={newBranch.email}
+                  onChange={(e) =>
+                    setNewBranch({ ...newBranch, email: e.target.value })
+                  }
+                  size="small"
+                  dir="ltr"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "12px",
+                      height: 36,
+                      fontSize: "0.875rem",
+                    },
+                  }}
+                />
+              </Box>
+
               {/* Branch Number */}
               <Box>
                 <Typography
@@ -308,6 +361,42 @@ export default function AddBranchDialog({
                 >
                   <MenuItem value="active">نشط ومفعل</MenuItem>
                   <MenuItem value="inactive">غير نشط</MenuItem>
+                </TextField>
+              </Box>
+
+              {/* City */}
+              <Box>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 600, mb: 0.5, color: "#374151", fontSize: "0.85rem" }}
+                >
+                  المدينة <span style={{ color: "#ef4444" }}>*</span>
+                </Typography>
+                <TextField
+                  select
+                  fullWidth
+                  value={newBranch.city_id}
+                  onChange={(e) =>
+                    setNewBranch({ ...newBranch, city_id: e.target.value })
+                  }
+                  size="small"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "12px",
+                      height: 36,
+                      fontSize: "0.875rem",
+                    },
+                  }}
+                >
+                  {cities.length === 0 ? (
+                    <MenuItem value="" disabled>جاري التحميل...</MenuItem>
+                  ) : (
+                    cities.map((city) => (
+                      <MenuItem key={city.id} value={city.id}>
+                        {city.name_ar || city.name_en}
+                      </MenuItem>
+                    ))
+                  )}
                 </TextField>
               </Box>
 

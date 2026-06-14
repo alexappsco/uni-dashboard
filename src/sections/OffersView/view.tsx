@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -16,6 +16,7 @@ import {
 import Iconify from "src/components/iconify";
 import SimpleTable from "src/components/SimpleTable";
 import DeleteDialog from "src/components/dialog/delete";
+import { getData } from "src/utils/crud-fetch-api";
 
 interface Offer {
   id: string;
@@ -91,7 +92,34 @@ const TABLE_HEAD = [
 
 export default function OffersView() {
   const router = useRouter();
-  const [offers, setOffers] = useState(DUMMY_OFFERS);
+  const [offers, setOffers] = useState<Offer[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadOffers() {
+      try {
+        setLoading(true);
+        const res = await getData<any>("/v1/offers/my-offers");
+        if (res.success && res.data && Array.isArray(res.data.data)) {
+          const mapped: Offer[] = res.data.data.map((offer: any) => ({
+            id: offer.id,
+            name: offer.title_ar || offer.title_en || "بدون اسم",
+            image: offer.images?.[0]?.image || "",
+            discountPercentage: offer.offer_percentage ? `${parseFloat(offer.offer_percentage)}%` : "-",
+            code: offer.code || "-",
+            createdAt: offer.start_date ? offer.start_date.split("T")[0] : "-",
+            status: offer.is_active ? "active" : "inactive",
+          }));
+          setOffers(mapped);
+        }
+      } catch (error) {
+        console.error("Error loading offers:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadOffers();
+  }, []);
   const [statusFilter, setStatusFilter] = useState<
     "all" | "active" | "inactive"
   >("all");
@@ -198,7 +226,7 @@ export default function OffersView() {
     image: (row: Offer) => (
       <Box
         component="img"
-        src={"/pizza.png"}
+        src={row.image || "/pizza.png"}
         alt={row.name}
         sx={{
           width: 88,
@@ -446,6 +474,7 @@ export default function OffersView() {
           headCells={TABLE_HEAD}
           actions={actions}
           customRender={customRender}
+          loading={loading}
         />
       </Card>
 

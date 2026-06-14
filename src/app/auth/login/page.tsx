@@ -16,8 +16,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 export default function LoginPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("store@user.com");
+  const [password, setPassword] = useState("Admin@123456");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
