@@ -22,6 +22,19 @@ export type CustomRender<T> = {
   [key in keyof T]?: (row: T) => React.ReactNode;
 };
 
+export type ServerPaginationProps = {
+  count: number;
+  page: number;
+  rowsPerPage: number;
+  onPageChange: (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => void;
+  onRowsPerPageChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+};
+
 export interface SimpleTableProps<T extends { id: string | number }> {
   data: T[];
   headCells: HeadCell<T>[];
@@ -31,4 +44,5 @@ export interface SimpleTableProps<T extends { id: string | number }> {
   onRowClick?: (row: T) => void;
   loading?: boolean;
   emptyMessage?: string;
+  serverPagination?: ServerPaginationProps;
 }
