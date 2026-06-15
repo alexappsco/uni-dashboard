@@ -31,6 +31,7 @@ function SimpleTable<T extends { id: string | number }>({
   onRowClick,
   loading = false,
   emptyMessage = "لا توجد بيانات",
+  serverPagination,
 }: SimpleTableProps<T>) {
   const t = useTranslations();
   const popover = usePopover();
@@ -59,24 +60,41 @@ function SimpleTable<T extends { id: string | number }>({
     [data, selectedRowId],
   );
 
-  const paginatedData = useMemo(
-    () => data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [data, page, rowsPerPage],
-  );
+  const paginatedData = useMemo(() => {
+    if (serverPagination) {
+      return data;
+    }
+
+    return data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  }, [data, page, rowsPerPage, serverPagination]);
 
   const handleChangePage = (
-    _event: React.MouseEvent<HTMLButtonElement> | null,
+    event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number,
   ) => {
+    if (serverPagination) {
+      serverPagination.onPageChange(event, newPage);
+      return;
+    }
+
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
+    if (serverPagination) {
+      serverPagination.onRowsPerPageChange(event);
+      return;
+    }
+
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const paginationCount = serverPagination?.count ?? data.length;
+  const paginationPage = serverPagination?.page ?? page;
+  const paginationRowsPerPage = serverPagination?.rowsPerPage ?? rowsPerPage;
 
   if (loading) {
     return (
@@ -291,9 +309,9 @@ function SimpleTable<T extends { id: string | number }>({
       )}
 
       <TablePaginationCustom
-        count={data.length}
-        page={page}
-        rowsPerPage={rowsPerPage}
+        count={paginationCount}
+        page={paginationPage}
+        rowsPerPage={paginationRowsPerPage}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         rowsPerPageOptions={[5, 10, 20]}
