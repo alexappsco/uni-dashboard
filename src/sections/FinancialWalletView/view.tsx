@@ -88,12 +88,12 @@ const OPERATION_LABELS = {
 
 const TABLE_HEAD = [
   { id: "operationNumber", label: "رقم العملية", align: "right", width: "14%" },
-  { id: "orderNumber", label: "رقم الطلب", align: "center", width: "12%" },
+  // { id: "orderNumber", label: "رقم الطلب", align: "center", width: "12%" },
   { id: "date", label: "التاريخ", align: "center", width: "12%" },
   { id: "operationType", label: "نوع العملية", align: "center", width: "13%" },
-  { id: "refundReason", label: "سبب الاسترداد", align: "right", width: "18%" },
+  // { id: "refundReason", label: "سبب الاسترداد", align: "right", width: "18%" },
   { id: "amount", label: "المبلغ", align: "center", width: "12%" },
-  { id: "balance", label: "الرصيد", align: "center", width: "12%" },
+  // { id: "balance", label: "الرصيد", align: "center", width: "12%" },
 ];
 
 export default function FinancialWalletView() {
