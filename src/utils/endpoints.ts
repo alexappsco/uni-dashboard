@@ -86,6 +86,7 @@ export const endpoints = {
   packages: {
     list: '/store/packages',
     subscribe: (packageId: string) => `/store/subscribe/${packageId}`,
+    myPackages: '/store/subscription',
   },
   support: {
     list: '/support-ticket',
