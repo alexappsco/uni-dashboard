@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, startTransition } from "react";
 import { Box } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import Header from "@/components/Header";
@@ -51,7 +51,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   useEffect(() => {
     if (isAuthPage) {
-      setCheckingAuth(false);
       return;
     }
 
@@ -63,7 +62,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       } catch (e) {}
       router.push("/auth/login");
     } else {
-      setCheckingAuth(false);
+      startTransition(() => setCheckingAuth(false));
     }
   }, [pathname, isAuthPage, router]);
 
