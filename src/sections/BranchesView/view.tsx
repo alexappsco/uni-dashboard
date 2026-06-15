@@ -60,17 +60,58 @@ export default function BranchesView({ initialBranches }: BranchesViewProps) {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [branchToDelete, setBranchToDelete] = useState<Branch | null>(null);
 
-  const handleStatusToggle = (id: string) => {
+  const handleStatusToggle = async (id: string, currentStatus: "active" | "inactive") => {
+    const isCurrentlyActive = currentStatus === "active";
+    const newActiveState = !isCurrentlyActive;
+    const nextStatus: "active" | "inactive" = newActiveState ? "active" : "inactive";
+
+    // 1. Optimistic update (Immediate UI update)
     setBranches((current) =>
       current.map((branch) =>
         branch.id === id
           ? {
               ...branch,
-              status: branch.status === "active" ? "inactive" : "active",
+              status: nextStatus,
             }
-          : branch,
-      ),
+          : branch
+      )
     );
+
+    try {
+      // 2. Perform API call in background
+      const res = await updateBranchAction(id, {
+        is_active: newActiveState,
+      });
+
+      if (!res.success) {
+        // 3. Revert back to original status if API call failed
+        setBranches((current) =>
+          current.map((branch) =>
+            branch.id === id
+              ? {
+                  ...branch,
+                  status: currentStatus,
+                }
+              : branch
+          )
+        );
+        alert(res.error || "حدث خطأ أثناء تعديل حالة الفرع");
+      }
+    } catch (error) {
+      console.error(error);
+      // Revert back if an error occurred
+      setBranches((current) =>
+        current.map((branch) =>
+          branch.id === id
+            ? {
+                ...branch,
+                status: currentStatus,
+              }
+            : branch
+        )
+      );
+      alert("حدث خطأ غير متوقع");
+    }
   };
 
   const filteredData = branches.filter((branch) => {
@@ -250,7 +291,7 @@ export default function BranchesView({ initialBranches }: BranchesViewProps) {
           </Typography>
           <Switch
             checked={active}
-            onChange={() => handleStatusToggle(row.id)}
+            onChange={() => handleStatusToggle(row.id, row.status)}
             sx={{
               '& .MuiSwitch-track': {
                 backgroundColor: active ? '#00A76F' : '#e5e7eb',

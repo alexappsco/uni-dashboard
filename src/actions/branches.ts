@@ -8,12 +8,12 @@ export async function getBranchesAction() {
     const res = await getData<any>('/v1/store/branches');
     if (res.success && res.data && Array.isArray(res.data.data)) {
       const mapped: Branch[] = res.data.data.map((store: any) => ({
+        ...store,
         id: store.id,
         branchNumber: store.is_main_branch ? "فرع رئيسي" : `فرع فرعي`,
         name: store.name,
         address: store.address || "غير محدد",
         status: store.is_active ? "active" : "inactive",
-        ...store
       }));
       return {
         success: true,
@@ -111,12 +111,12 @@ export async function getBranchAction(id: string) {
     if (res.success && res.data && res.data.data) {
       const store = res.data.data;
       const mapped: Branch = {
+        ...store,
         id: store.id,
         branchNumber: store.is_main_branch ? "فرع رئيسي" : `فرع فرعي`,
         name: store.name,
         address: store.address || "غير محدد",
         status: store.is_active ? "active" : "inactive",
-        ...store
       };
       return {
         success: true,
@@ -137,7 +137,7 @@ export async function getBranchAction(id: string) {
 
 export async function updateBranchAction(
   id: string,
-  data: {
+  data: Partial<{
     branch_id: string;
     name: string;
     email: string;
@@ -146,7 +146,7 @@ export async function updateBranchAction(
     longitude: number;
     city_id: string;
     is_active: boolean;
-  }
+  }>
 ) {
   try {
     const res = await editData<any, any>(`/v1/store/branches/${id}`, 'PUT', data);
