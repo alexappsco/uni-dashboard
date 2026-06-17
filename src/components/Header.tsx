@@ -33,7 +33,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
       const storedUser = localStorage.getItem("user");
       if (storedUser) {
         const parsed = JSON.parse(storedUser);
-        const nameVal = parsed.username || parsed.name || parsed.email || parsed.displayName;
+        const nameVal = parsed.name || parsed.username || parsed.email || parsed.displayName;
         if (nameVal) {
           setUserName(nameVal);
         }
